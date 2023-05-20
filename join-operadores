@@ -1,0 +1,66 @@
+-- exercício de operadores de junção, usando um db de banca de frutas
+
+create table conjuntoA(
+    cod_fruta_A number(2),
+    nome_fruta_A varchar2(30)
+);
+
+-- criando tabela
+
+----
+
+insert into conjuntoA values (1, 'banana');
+insert into conjuntoA values (2,'mamao');
+insert into conjuntoA values (3, 'limao');
+commit;
+
+select * from conjuntoA;
+
+-- inserindo itens 
+
+----
+
+create table conjuntoB(
+    cod_fruta_B number(2),
+    nome_fruta_B varchar2(30)
+);
+
+-- criando segunda tabela
+
+-----
+insert into conjuntoB values (1, 'banana');
+insert into conjuntoB values (20,'melancia');
+insert into conjuntoB values (30, 'abacaxi');
+commit;
+
+select * from conjuntoB;
+
+--inserindo dados segunda tabela
+
+-----
+
+--operador union
+
+select cod_fruta_A, nome_fruta_a from conjuntoA
+union 
+--operador de união. union all mostra também as repetições
+select cod_fruta_B, nome_fruta_b from conjuntoB;
+
+-----
+
+--operador intersect 
+
+select  cod_fruta_a, nome_fruta_a from conjuntoA
+intersect 
+--mostra os elementos repetidos
+select  cod_fruta_b, nome_fruta_b from conjuntoB
+
+-----
+
+--operador minus/except
+
+select  cod_fruta_a, nome_fruta_a from conjuntoA
+minus 
+--também pode ser usado o except 
+--exclui um conjunto do outro, eliminando dados repetidos 
+select  cod_fruta_b, nome_fruta_b from conjuntoB;
