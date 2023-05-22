@@ -1,0 +1,31 @@
+-- Totalização de consultas
+SELECT deptno, job, sum(sal)
+--indica a soma salarial de cada cargo dentro do departamento 
+FROM scott.emp
+GROUP BY (deptno, job)
+--agrupa pelo cargo dentro do departamento 
+ORDER BY deptno, job; 
+
+----
+
+--Fazendo somas dentro das colunas
+
+SELECT deptno, job, sum(sal)
+--indica a soma salarial de cada cargo dentro do departamento 
+FROM scott.emp
+GROUP BY ROLLUP (deptno, job)
+--calcula subtotais daquela coluna 
+ORDER BY deptno, job; 
+
+----
+
+-- Impondo condições na função de grupos
+
+SELECT  job, sum(sal)
+--indica a soma salarial de cada cargo dentro do departamento 
+	FROM scott.emp
+	GROUP BY job
+--calcula subtotais daquela coluna 
+HAVING sum(sal) > 5000
+--funciona como a where mas para funções de grupos 
+ORDER BY sum(sal); 
