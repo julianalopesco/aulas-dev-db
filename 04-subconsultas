@@ -1,0 +1,52 @@
+--SUBCONSULTAS
+
+SELECT ename, deptno
+FROM scott.emp
+WHERE deptno=(SELECT deptno 
+	FROM scott.emp
+	WHERE ename = 'SMITH'
+    --subconsulta
+    );
+    
+-----------
+ 
+--exibindo o nome e o cargo de quem ganha igual ou mais que o scott
+SELECT ename, job, sal
+FROM scott.emp
+WHERE sal>=(
+    SELECT sal 
+	FROM scott.emp
+	WHERE ename = 'SCOTT'
+    --subconsulta
+    );
+    
+-------
+
+--subconsultas na cláusula FROM com JOIN
+SELECT a.ename, a.sal, a.deptno, trunc(b.salavg)
+    FROM scott.emp a, (
+    	SELECT deptno, avg(sal) salavg
+		--mostra a média salarial do depto
+		FROM scott.emp
+		GROUP BY deptno
+    	) b
+    -- b: apelido da subconsulta, salavg: apelido, a: apelido da tabela emp 
+    
+WHERE a.deptno = b.deptno
+AND a.sal > b.salavg
+ORDER BY deptno;
+
+---------
+
+--subconsulta na cláusula WHERE
+
+SELECT ename, sal, job
+FROM scott.emp
+WHERE JOB=( 
+    SELECT job
+    FROM scott.emp
+    WHERE empno=7566
+    -- para saber o nome dos funcionários que possuem o mesmo cargo do 7566
+    );
+
+
