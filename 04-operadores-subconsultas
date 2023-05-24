@@ -1,0 +1,60 @@
+-- OPERADORES PARA SUBCONSULTAS
+
+--para descobrir quem ganha sal igual ou menor que clerk
+
+SELECT empno, ename, job, sal
+FROM scott.emp
+WHERE sal < ANY 
+    -- funciona como OU, e mostra os func onde o salario seja menor que qualquer valor da subconsulta
+    -- pode ser trocado pelo ALL, que funciona como e 
+		(
+    	SELECT sal 
+    	FROM scott.emp
+    	WHERE job ='CLERK'
+        ) 
+AND job <> 'CLERK';
+-- <>: verifica se dois valores são diferentes um do outro 
+
+---------
+
+--operador EXISTS
+SELECT DISTINCT deptno
+FROM scott.emp
+    
+WHERE EXISTS
+    -- para saber se na tabela emp há algum depto que existe na tabela dept
+		(
+    	SELECT deptno
+    	FROM scott.dept
+
+        ) 
+ORDER BY deptno;
+
+------ 
+
+-- operador IN
+
+SELECT ename, job, sal
+FROM scott.emp    
+WHERE sal in
+    -- usado quando a subconsulta retorna mais de um valor
+    -- 'seja igual a que'
+		(
+    	SELECT MAX (sal)
+    	FROM scott.emp
+		GROUP BY job
+        ); 
+ORDER BY deptno;
+
+-- operador IN para retornar várias colunas
+
+SELECT empno, ename, job, sal, deptno
+FROM scott.emp    
+WHERE (job, deptno) in
+    -- para saber quais funcionarios tem o msm cargo e depto do funcionario 7844
+    
+		(
+    	SELECT job, deptno
+    	FROM scott.emp
+		WHERE empno = 7844
+        ); 
